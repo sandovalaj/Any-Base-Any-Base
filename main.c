@@ -19,9 +19,11 @@ int main()
     printf("Input decimal: ");
     scanf("%s", input);
     printf("Convert to base: ");
-    scanf("%d", &base);
+    scanf("%u", &base);
 
     printf("\n\n");
+
+    if(base==2 || base==8|| base==10 || base==16){//ensures base is only 2,8,10,16
 
     if(sscanf(input, "%lf", &temp)==1){
         if((int)temp-temp!=0){//integer input minus original input, if it is not 0, it is a float
@@ -39,9 +41,13 @@ int main()
         printf("Invalid Input");
     }
 
+    }else{
+    printf("Invalid Base Input");
+    }
     printf("\n\n");
     return 0;
 }
+
 
 void printOut(int x){//PRINTS OUT ALL DIGITS; INCLUDES HEXADECIMAL CONVERT; input INTEGER to print
     char hex[6]="ABCDEF";
@@ -74,7 +80,7 @@ void decIntTAB(int input, int base){ //performs decimal integer to any base; inp
         digit++;
     }
 
-    for(int a=(digit);a>=0;a--){//Prints out array
+    for(int a=(digit-1);a>=0;a--){//Prints out array
         printOut(array[a]);
     }
 }
