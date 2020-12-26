@@ -1,53 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 //DECIMAL TO ANY BASE
-
-void decIntTAB();
-void decFraTAB();
-void printOut();
-
-int main()
-{
-    printf("\t\t\t\t\tBASIC NUMBER CONVERSIONS\n\n");
-    printf("Base Guide: \t\t2 - Binary \t\t8 - Octal \t\t10 - Decimal \t\t16 - Hexadecimal\n\n");
-
-    char input[150];
-    double temp;
-    int base;
-
-    printf("Input decimal: ");
-    scanf("%s", input);
-    printf("Convert to base: ");
-    scanf("%u", &base);
-
-    printf("\n\n");
-
-    if(base==2 || base==8|| base==10 || base==16){//ensures base is only 2,8,10,16
-
-    if(sscanf(input, "%lf", &temp)==1){
-        if((int)temp-temp!=0){//integer input minus original input, if it is not 0, it is a float
-            int decimalInt=(int)temp;
-            double decimalFlt=temp-decimalInt;
-
-            decIntTAB(decimalInt,base);
-            printf(".");
-            decFraTAB(decimalFlt, base);
-        }else{ //integer
-            int decimalInt=(int)temp;
-            decIntTAB(decimalInt, base);
-        }
-    }else{
-        printf("Invalid Input");
-    }
-
-    }else{
-    printf("Invalid Base Input");
-    }
-    printf("\n\n");
-    return 0;
-}
-
 
 void printOut(int x){//PRINTS OUT ALL DIGITS; INCLUDES HEXADECIMAL CONVERT; input INTEGER to print
     char hex[6]="ABCDEF";
@@ -94,4 +49,41 @@ void decFraTAB(double input, int base){
     }
 
 }
+
+int main()
+{
+    printf("\t\t\t\t\tBASIC NUMBER CONVERSIONS\n\n");
+    printf("Base Guide: \t\t2 - Binary \t\t8 - Octal \t\t10 - Decimal \t\t16 - Hexadecimal\n\n");
+
+    double input, fract, integ;
+    int base, iInteg;
+
+    printf("Input decimal: ");
+    scanf("%lf", &input);
+    printf("Convert to base: ");
+    scanf("%u", &base);
+
+    printf("\n");
+
+    if(base==2 || base==8|| base==10 || base==16){//ensures base is only 2,8,10,16
+        fract=modf(input, &integ);
+        iInteg=integ;
+
+        if(fract==0){
+            decIntTAB(iInteg, base);
+        }else{
+            decIntTAB(iInteg, base);
+            printf(".");
+            decFraTAB(fract, base);
+        }
+
+    }else{
+        printf("Invalid Input");
+        }
+
+    return 0;
+}
+
+
+
 
