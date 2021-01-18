@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
+
+char again[3] = "y\n";
 
 //DECIMAL TO ANY BASE
 
@@ -53,19 +56,27 @@ void decFraTAB(double input, int base){
 int main()
 {
     printf("\t\t\t\t\tBASIC NUMBER CONVERSIONS\n\n");
-    printf("Base Guide: \t\t2 - Binary \t\t8 - Octal \t\t10 - Decimal \t\t16 - Hexadecimal\n\n");
+    printf("Base Guide: \t\t2 - Binary \t\t8 - Octal \t\t10 - Decimal \t\t16 - Hexadecimal\n");
 
+while (strcmp(again, "n"))
+{
     double input, fract, integ;
     int base, iInteg;
 
-    printf("Input decimal: ");
+    printf("\nInput decimal: ");
     scanf("%lf", &input);
     printf("Convert to base: ");
     scanf("%u", &base);
 
     printf("\n");
 
-    if(base==2 || base==8|| base==10 || base==16){//ensures base is only 2,8,10,16
+    if (base==2 || base==8|| base==10 || base==16){//ensures base is only 2,8,10,16
+    	if (input < 0)
+    	{
+    		printf("-");
+    		input = abs(input);
+		}
+		
         fract=modf(input, &integ);
         iInteg=integ;
 
@@ -76,10 +87,14 @@ int main()
             printf(".");
             decFraTAB(fract, base);
         }
-
     }else{
         printf("Invalid Input");
         }
+        
+	printf("\nConvert again? y/n: ");
+    scanf("%s", &again);
+    
+}
 
     return 0;
 }
