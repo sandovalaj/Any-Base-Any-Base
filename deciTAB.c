@@ -74,7 +74,7 @@ while (strcmp(again, "n"))
     	if (input < 0)
     	{
     		printf("-");
-    		input = abs(input);
+    		input = fabs(input);
 		}
 		
         fract=modf(input, &integ);
