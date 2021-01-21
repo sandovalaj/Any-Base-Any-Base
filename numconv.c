@@ -3,6 +3,16 @@
 #include <string.h>
 #include <math.h>
 
+//TODO
+//convert base 10 to base 2 input 1212 prints out decimal point
+
+//TODO
+//do not print out zeroes/double when input is only integer
+
+char again[] = "y";
+long int deciInt;
+long double deciFra;
+
 void abtab(char input[], int base1, int base2, int n);
 void decitab(long int deciII, long double deciFI, int base);
 long double abtdeci(char input[], int base, int n);
@@ -11,6 +21,12 @@ void outtab (int x);
 
 int main()
 {
+	
+while (strcmp(again, "n"))
+{
+	deciInt = 0;
+	deciFra = 0.0;
+	
     int base1, base2;
     char *ptr;
 
@@ -21,12 +37,13 @@ int main()
         exit(0);
     }
 
-    printf("Input base to convert from: ");
+    printf("\nConvert from base: ");
     scanf("%u", &base1);
-    printf("Input: ");
-    scanf("%s", ptr);
     printf("Convert to base: ");
     scanf("%u", &base2);
+    printf("Input: ");
+    scanf("%s", ptr);
+    
 
     int n = strlen(ptr);
     char input[n];
@@ -42,7 +59,9 @@ int main()
     {
         if (base2 == 10)
         {
-        	printf("\n%.8Lf\n", abtdeci(input, base1, n));
+        	//TODO 
+        	//add option to adjust fractional precision without rounding up
+			printf("\n%.8Lf", abtdeci(input, base1, n));	
 		}   
         else
         {
@@ -53,19 +72,23 @@ int main()
     {
     	printf("Invalid base.");
 	}
-        
+	
+	printf("\n\nConvert again? y/n: ");
+	scanf("%s", again);
+}
     return 0;
 }
 
+//Any Base to Any Base (any base to decimal - decimal to any base)
 void abtab(char input[], int base1, int base2, int n)
 {
-	printf("\n%.8Lf\n", abtdeci(input, base1, n));  
-   	
+	abtdeci(input, base1, n);
+	decitab(deciInt, deciFra, base2); 	
 }
 
+//Decimal to Any Base
 void decitab(long int deciII, long double deciFI, int base)
 {
-	
 	int digit = 0, nega = 0;
 	
 	if (deciII < 0)
@@ -74,9 +97,7 @@ void decitab(long int deciII, long double deciFI, int base)
     }
     
     deciII = abs(deciII);
-    deciFI = fabs(deciFI) - deciII;
-    
-    printf("%ld %Lf", deciII, deciFI);
+    deciFI = fabs(deciFI);
     
     long int temp = deciII;
     
@@ -122,10 +143,11 @@ void decitab(long int deciII, long double deciFI, int base)
 	}
 }
 
+//Any Base to Decimal
 long double abtdeci(char input[], int base, int n)
 {
-    long int deciInt = 0;
-    long double deciFra = 0.0;
+    long int *i = &deciInt;
+    long double *f = &deciFra;
     int a = 0;
     int nega;
 
@@ -137,16 +159,10 @@ long double abtdeci(char input[], int base, int n)
 
     while (input[a] != '.' && input[a] != '\0')
     {
-        //printf("%ld * %u is ", deciInt, base);
-        deciInt *= base;
-        //printf("%ld\n", deciInt);
-        //printf("%ld + %d is ", deciInt, toint(input[a]));
-        deciInt += toint(input[a]);
-        //printf("%ld\n", deciInt);
+        *i *= base;
+        *i += toint(input[a]);
         a++;
     }
-
-    //printf("\n");
 
     if (input[a] == '.')
     {
@@ -154,20 +170,25 @@ long double abtdeci(char input[], int base, int n)
 
         while (input[a] != '.')
         {
-            deciFra += (double)toint(input[a]);
-            deciFra /= (double)base;
-            //printf("%Lf henlo\n", deciFra);
+            *f += (double)toint(input[a]);
+            *f /= (double)base;
             a--;
         }
     }
-
-    long double decimal = deciInt + deciFra;
-    if (nega == 1)
-       decimal *= -1;
+	
+	if (nega == 1)
+	{
+		deciInt *= -1;
+    	deciFra *= -1;
+	}
+         
+	//printf("%ld %Lf\n", deciInt, deciFra);
+    long double final = *i + *f;
     
-    return decimal;
+    return final;
 }
 
+//Converts input (char) to integer; including letters A - F for hexadecimal input
 int toint(char input)
 {
     if (!(input >= 'A' && input <= 'F'))
@@ -193,6 +214,7 @@ int toint(char input)
     }
 }
 
+//Prints out output; including conversion of numbers 10 - 15 for hexadecimal output
 void outtab (int x)
 {
     char hex[6] = "ABCDEF";
